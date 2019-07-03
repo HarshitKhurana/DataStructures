@@ -1,165 +1,181 @@
-#include "HashMap.h"
+# pragma once   // Gaurding against re-compilcation.
 
-template <typename KeyType , typename ValueType>
-HashMap<KeyType , ValueType>::HashMap(int size)
-{
-  cout << "[*] Initial size of HashMap as asked by user is : " << size<<endl;
-  maxSize = size;
-  arrayOfObjects = new HashNode<KeyType , ValueType>*[maxSize];
-
-  // Initialise all objects with Null , will be useful in case of re-hashing i.e finding out what all indexes actually contain data and which ones not.
-  for (int i = 0 ; i < maxSize ; i++)
-    arrayOfObjects[i] = NULL;
-}
+#include "HashNode.h"
 
 
 template <typename KeyType , typename ValueType>
-void HashMap <KeyType , ValueType>:: rehash()
+class HashMap
 {
-   /* 
-    * This function is called means loadFactor has exceeded 70%.
-    * Re-create hashes for all the objects in the array and re-write in a new array of double the size previous and assign it to the previous array only (obv after adding all the key-value pair)
-    */  
+  HashNode<KeyType , ValueType> **arrayOfObjects;   // the array containing the key-value pair ( Dynamic - On Heap )
+  int maxSize;   // Maximum number of objects that can be stored in the array
+  int currentSize;  // current size of array at current moment.
 
-  int prevSize = maxSize;
-  maxSize = 2*maxSize;
-  HashNode<KeyType,ValueType> **prevArrayOfObjects = arrayOfObjects;    // Stored the previous list here.
-  arrayOfObjects = new HashNode<KeyType , ValueType>*[maxSize];         // Create new list of double the size.
-
-  // Now simply iterate over all the objects in the 'prevArrayOfObjects' and for every 'key-value' pair call insert function.
-  for (int i = 0 ; i < prevSize ; i++ )
+  // Functions which will be called only via other functions present in this class only.
+  
+  void rehash()   // Function which re-hash the entire hashMap and re-calculate all indices once the loadfactor goes beyond 70%.
   {
-    if (prevArrayOfObjects[i] != NULL )       //  insert in new List
+     /* 
+      * This function is called means loadFactor has exceeded 70%.
+      * Re-create hashes for all the objects in the array and re-write in a new array of double the size previous and assign it to the previous array only (obv after adding all the key-value pair)
+      */  
+
+    int prevSize = maxSize;
+    maxSize = 2*maxSize;
+    HashNode<KeyType,ValueType> **prevArrayOfObjects = arrayOfObjects;    // Stored the previous list here.
+    arrayOfObjects = new HashNode<KeyType , ValueType>*[maxSize];         // Create new list of double the size.
+
+    // Now simply iterate over all the objects in the 'prevArrayOfObjects' and for every 'key-value' pair call insert function.
+    for (int i = 0 ; i < prevSize ; i++ )
     {
-      HashNode<KeyType , ValueType> *head = prevArrayOfObjects[i];
-      
-      // for all the elements in the branch of this HashNode (if there is any)
-      while ( head != NULL) {
-        this->insert( head->key , head->value );
-        head = head->next;      
+      if (prevArrayOfObjects[i] != NULL )       //  insert in new List
+      {
+        HashNode<KeyType , ValueType> *head = prevArrayOfObjects[i];
+        
+        // for all the elements in the branch of this HashNode (if there is any)
+        while ( head != NULL) {
+          this->insert( head->key , head->value );
+          head = head->next;      
+        }
       }
     }
+    
+    return;
   }
-  
-  return;
-}
 
-template <typename KeyType , typename ValueType>
-int  HashMap<KeyType , ValueType> :: calculateHash(KeyType k)
-{
-  /*
-   * Returns the hash value of this key-pair which is the sum of all ASCII characters in the key.
-   */
 
-  int hashValue = 0;
-  string keyString = (string)k;     // Type cast into string and hope it gets typecasted properly.
-  for (int i = 0 ; i < keyString.length() ; i++)
-    hashValue += keyString[i];
-
-  return hashValue;
-}
-
-template <typename KeyType , typename ValueType>
-int  HashMap <KeyType , ValueType>:: size()
-{
-  return this->currentSize;
-}
-
-template <typename KeyType , typename ValueType>
-bool HashMap<KeyType , ValueType> :: insert(KeyType k , ValueType v)    
-{
-  // Before inserting no need to check for size because after every insertion a check for loadFactor is being done and since we will be inserting one by one thus no need to check size before.
-  // Check the loadFactor after inserting if it's greater than 70% then call rehashing function.
-  // For insertion just get the hash value and once you get it iterate over that branch in the List/Array/Chain of arrayOfObjects and wherever you find NULL just place the element there.
-
-  /*
-   * This function simply inserts the 'Key-Value' pair in the Array of Objects.
-   */
-
-  bool inserted = false;
-  int hashValue = calculateHash(k);
-  HashNode<KeyType, ValueType> itr  = arrayOfObjects[hashValue];
-
-  // Reach the end of list where itr->next is NULL.
-  while (itr->next != NULL)
+  // Returns current size of the array of objects.
+  int  size()
   {
-    itr = itr->next;
+    return this->currentSize;
   }
-  HashNode<KeyType, ValueType> obj(k,v);
-  itr->next = obj;
-  inserted = true;
 
-  currentSize += 1;     // Since a new element is added
 
-  // Load Factor check for re-hashing to avoid collisions
-  int loadFactor = 1.0 * (currentSize/ maxSize);
-  if (loadFactor < 0.70)
-    rehash();
-}
-
-// Everything is done in insert function only, no need to do it seperately.
-template <typename KeyType , typename ValueType>
-bool HashMap <KeyType , ValueType>:: update(KeyType k , ValueType v) 
-{
-  /*
-   * Function to update the key-Value pair of an already existing object, if no object with that key found then would create a new object and insert it.
-   */
-  return this->insert(k,v);
-}
-
-template <typename KeyType , typename ValueType>
-bool HashMap <KeyType , ValueType>:: remove(KeyType k )                  
-{
-  /*
-   * Function to remove the 'Key-Value' pair corresponding to the object pointed out by the key.
-   */
-  int hashValue = calculateHash(k);
-
-  HashNode<KeyType , ValueType> finalNode = arrayOfObjects[hashValue];
-  HashNode<KeyType , ValueType> parent = finalNode;
-  HashNode<KeyType , ValueType> itr = finalNode;
-
-  bool deletedElement = false;
-  if (itr->key == k)
+  // The function which calculates and returns the hash for that key-value pair.
+  int  calculateHash(KeyType k)
   {
-    // Delete this node and by delete , directly modify in final list since it was the first element itslef that matched.
-    finalNode = itr->next;
-    free itr;
-    deletedElement = true;
+    /*
+     * Returns the hash value of this key-pair which is the sum of all ASCII characters in the key.
+     */
+
+    int hashValue = 0;
+    string keyString = (string)k;     // Type cast into string and hope it gets typecasted properly.
+    for (unsigned int i = 0 ; i < keyString.length() ; i++)
+      hashValue += keyString[i];
+
+    return hashValue;
   }
-  else
-  {
-    itr = itr->next; // We know for sure that the first element in the chain isn't the 'Key-Value' pair we are looking for.
-    while ( itr != NULL)
+
+
+  // Functions which will be called direclty via object of this class.
+  public:
+
+    HashMap(int size)   // Constructor to create hashmap object for insertion/updation/deletion of key-value pair.
     {
+      cout << "[*] Initial size of HashMap as asked by user is : " << size<<endl;
+      maxSize = size;
+      arrayOfObjects = new HashNode<KeyType , ValueType>*[maxSize];
+
+      // Initialise all objects with Null , will be useful in case of re-hashing i.e finding out what all indexes actually contain data and which ones not.
+      for (int i = 0 ; i < maxSize ; i++)
+        arrayOfObjects[i] = NULL;
+    }
+
+
+    // Returns true if insertion was successful else returns false
+    bool insert(KeyType k , ValueType v)    
+    {
+      // Before inserting no need to check for size because after every insertion a check for loadFactor is being done and since we will be inserting one by one thus no need to check size before.
+      // Check the loadFactor after inserting if it's greater than 70% then call rehashing function.
+      // For insertion just get the hash value and once you get it iterate over that branch in the List/Array/Chain of arrayOfObjects and wherever you find NULL just place the element there.
+
+      /*
+       * This function simply inserts the 'Key-Value' pair in the Array of Objects.
+       */
+
+      int hashValue = calculateHash(k);
+      HashNode<KeyType, ValueType> *itr  = arrayOfObjects[hashValue];
+
+      // Reach the end of list where itr->next is NULL.
+      while (itr->next != NULL)
+      {
+        itr = itr->next;
+      }
+      HashNode<KeyType, ValueType> *obj = new HashNode<KeyType , ValueType>(k,v);
+      itr->next = obj;
+
+      currentSize += 1;     // Since a new element is added
+
+      // Load Factor check for re-hashing to avoid collisions
+      int loadFactor = 1.0 * (currentSize/ maxSize);
+      if (loadFactor < 0.70)
+        rehash();
+      return true;
+    }
+
+
+    // Everything is done in insert function only, no need to do it seperately.
+    bool  update(KeyType k , ValueType v) 
+    {
+      /*
+       * Function to update the key-Value pair of an already existing object, if no object with that key found then would create a new object and insert it.
+       */
+      return this->insert(k,v);
+    }
+
+    bool remove(KeyType k )                    // Returns true if removing successful else returns false
+    {
+      /*
+       * Function to remove the 'Key-Value' pair corresponding to the object pointed out by the key.
+       */
+      int hashValue = calculateHash(k);
+
+      HashNode<KeyType , ValueType> *finalNode = arrayOfObjects[hashValue];
+      HashNode<KeyType , ValueType> *parent = finalNode;
+      HashNode<KeyType , ValueType> *itr = finalNode;
+
+      bool deletedElement = false;
       if (itr->key == k)
       {
-        // Delete this node and by delete I mean , parent->next = currObject->next and free currObject and then break;
-        parent->next = itr->next;
-        free itr;
+        // Delete this node and by delete , directly modify in final list since it was the first element itslef that matched.
+        finalNode = itr->next;
+        delete itr;
         deletedElement = true;
       }
-      parent = itr;
-      itr = itr->next;
+      else
+      {
+        itr = itr->next; // We know for sure that the first element in the chain isn't the 'Key-Value' pair we are looking for.
+        while ( itr != NULL)
+        {
+          if (itr->key == k)
+          {
+            // Delete this node and by delete I mean , parent->next = currObject->next and delete currObject and then break;
+            parent->next = itr->next;
+            delete itr;
+            deletedElement = true;
+          }
+          parent = itr;
+          itr = itr->next;
+        }
+      }
+
+      arrayOfObjects[hashValue]  = finalNode ;    // Finally placing back the value on the list.
+      return deletedElement;
     }
-  }
 
-  arrayOfObjects[hashValue]  = finalNode :    // Finally placing back the value on the list.
-  return deletedElement;
-}
-
-
-template <typename KeyType , typename ValueType>
-void HashMap<KeyType , ValueType> :: printAllObjects()
-{
-  cout << "[*] printAllObjects() : The Objects are as : "<<endl;
-  for (int i = 0 ;i < currentSize ; i ++)
-  {
-    HashNode<KeyType , ValueType> *itr = arrayOfObjects[i];
-    while (itr->next != NULL)
+    // Function to print All objects present in Array.
+    void printAllObjects()
     {
-      cout << itr->key <<" --- "<<itr->Value;
+      cout << "[*] printAllObjects() : The Objects are as : "<<endl;
+      for (int i = 0 ;i < currentSize ; i ++)
+      {
+        HashNode<KeyType , ValueType> *itr = arrayOfObjects[i];
+        while (itr->next != NULL)
+        {
+          cout << itr->key << " --- " << itr->value;
+        }
+        cout <<endl;
+      }
     }
-    cout <<endl;
-  }
-}
+
+  };
+

@@ -7,11 +7,11 @@ using namespace std;
 template <typename KeyType, typename ValueType>   
 class HashNode{
 
+  public:
   KeyType key;
   ValueType value;
   HashNode *next;     // Pointer to next (used incase of collision , otherwise NULL)
 
-  public:
     HashNode(KeyType k , ValueType v)
     {
       this->key = k;
