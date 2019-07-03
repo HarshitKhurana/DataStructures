@@ -11,6 +11,13 @@ void help()
   cout << "\t4. Print all key-Value pairs present" <<endl;
   cout << "\t5. Print current Number of 'Key-value' pairs and Load Factor of HashMap" <<endl;
   cout << "\t9. To Quit" <<endl;
+  return;
+}
+
+void clearScreen()
+{
+  cout << "\033[2J\033[1;1H";   // Special character for clearscreen.
+  return;
 }
 
 int main( int argc,  char *argv[]){
@@ -21,7 +28,7 @@ int main( int argc,  char *argv[]){
   HashMap<string, string> hashMapObject(sizeOfHashMap) ;
   int choice = 11 ;
 
-  system("clear");      // to clear screen
+  clearScreen();      // to clear screen
   cout << "\t\t\t\t\t\tHashMap Code\n"<<endl;
 
   while (true)  {

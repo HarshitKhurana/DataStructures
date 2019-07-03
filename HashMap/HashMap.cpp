@@ -1,4 +1,4 @@
-#include "HashNode.h"
+#include "HashMap.h"
 
   template <typename KeyType , typename ValueType>
   void HashMap<KeyType ,ValueType> :: rehash()   
@@ -174,9 +174,10 @@
   }
 
 
+  template <typename KeyType , typename ValueType>
   void  HashMap<KeyType ,ValueType> :: printAllObjects()
   {
-    if (currentSize == 0)
+    if (this->getSize() == 0)
     {
       cout << "[*] printAllObjects() : arrayOfObjects is empty"<<endl;
       return;
@@ -200,6 +201,7 @@
   }
 
 
+  template <typename KeyType , typename ValueType>
   int  HashMap<KeyType ,ValueType> :: getLoadFactor(){
     /* Returns current Load Factor of hashMap.
      */
@@ -207,6 +209,7 @@
   }
   
 
+  template <typename KeyType , typename ValueType>
   int HashMap<KeyType ,ValueType> ::  getSize()
   {
     /* Returns current size of the HashMap.
