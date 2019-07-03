@@ -1,5 +1,3 @@
-# pragma once   // Gaurding against re-compilcation.
-
 #include "HashNode.h"
 
 #define print(x,y) cout <<x<<"\t:\t"<<y<<endl
