@@ -2,6 +2,8 @@ CFLAGS=-std=c++11 -Wall
 
 all: hashMapCode
 
+install: hashMapCode
+
 hashMapCode: HashMap.o main.o
 		$(CXX) $(CFLAGS) main.o -o hashMapCode
 

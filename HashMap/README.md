@@ -3,7 +3,7 @@
 ##### -> To simply put a hashmap in C++ is a Data Structure that helps to access a value which related to its' corresponding key in O(1) time.
 ##### -> The way it does is by keeping a map of all the key-value pairs and whenever a new pair is added or the `value` corresponding to a particular `key` is asked for it simply looks up in the map and returns.
 ##### -> The code is an implementation of HashMap with *`Seperate Chaining`* which means that incase of a collision (i.e the case when hash values of 2 keys are same), a new branch will be formed at that specific index and all the 'Key-Value' pair that returns the same hash the corresponding object will be pushed in that seperate branch/list.
-##### -> The hash function used here is the sum of ASCII value of all characters in the key.(can be modified in HashMap.cpp though).
+##### -> The hash function used here is the sum of ASCII value of all characters in the key multiplied by their indexes and finally modulus with maxSize of List.(can be modified in HashMap.cpp though).
 ##### -> To run it do the following steps :
 ```
 user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git

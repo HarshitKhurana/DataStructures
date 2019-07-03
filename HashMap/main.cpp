@@ -2,55 +2,70 @@
 #include"HashMap.cpp"
 #include<stdlib.h>
 
-int main( int argc,  char *argv[]){
-
-  cout << "[*] HashMap Code\n"<<endl;
-  int choice = 0 ;
-  cout << "Enter as follows : "<<endl;
+void help()
+{
+  cout << "[*] Enter as follows : "<<endl;
   cout << "\t1. Insert a key-value pair" <<endl;
   cout << "\t2. Update a key-value pair" <<endl;
   cout << "\t3. Delete a key-value pair" <<endl;
   cout << "\t4. Print all key-Value pairs present" <<endl;
-  cout << "\t5. To Quit" <<endl;
-  cin>>choice;
+  cout << "\t5. Print current Number of 'Key-value' pairs and Load Factor of HashMap" <<endl;
+  cout << "\t9. To Quit" <<endl;
+}
+
+int main( int argc,  char *argv[]){
 
   int sizeOfHashMap = 5;
-  HashMap<string, string> hashMapObject(sizeOfHashMap) ;
   string key , value;
 
+  HashMap<string, string> hashMapObject(sizeOfHashMap) ;
+  int choice = 11 ;
+
+  system("clear");      // to clear screen
+  cout << "\t\t\t\t\t\tHashMap Code\n"<<endl;
+
   while (true)  {
+  help();
+  cout << "\n[*] Enter choice: ";
+  cin>>choice;
+  if ( choice < 1 || choice > 10 )
+  {
+    cerr <<"[#] Invalid choice, please run again and provide valid input"<<endl;
+    exit(1);   // user screwed up
+  }
     switch (choice)
     {
       case 1:
-        cout << "Enter Key to insert : ";
+        cout << "\t[*] Enter Key to insert : ";
         cin>>key;
-        cout << "Enter value to insert : ";
+        cout << "\t[*] Enter value to insert : ";
         cin>>value;
         hashMapObject.insert(key , value) ; 
-        cout << "[*] Inserted pair in HashMap"<<endl;
         break;
       case 2:
-        cout << "Enter Key to update : ";
+        cout << "\t[*] Enter Key to update : ";
         cin>>key;
-        cout << "Enter value to update : ";
+        cout << "\t[*] Enter value to update : ";
         cin>>value;
         hashMapObject.update(key , value) ; 
-        cout << "[*] Updated pair in HashMap"<<endl;
         break;
       case 3:
-        cout << "Enter Key to delete : ";
+        cout << "\t[*] Enter Key to delete : ";
         cin>>key;
         hashMapObject.remove(key) ; 
-        cout << "[*] Deleted pair from HashMap"<<endl;
         break;
       case 4:
         hashMapObject.printAllObjects();
         break;
       case 5:
+        cout << "[*] Load Factor of HashMap : "<<hashMapObject.getLoadFactor()<<endl;
+        cout << "[*] Currently number of 'Key-Value' pairs stored in HashMap : "<<hashMapObject.getSize()<<endl;
+        break;
+      case 9:
         exit(0);
         break;
       default:
-        cout << "That ain't an option"<<endl;
+        cout << "\t[#] That ain't an option, try again..."<<endl;
         break;
     }
   }

@@ -2,13 +2,16 @@
 
 #include "HashNode.h"
 
+#define print(x,y) cout <<x<<"\t:\t"<<y<<endl
+
 
 template <typename KeyType , typename ValueType>
 class HashMap
 {
   HashNode<KeyType , ValueType> **arrayOfObjects;   // the array containing the key-value pair ( Dynamic - On Heap )
   int maxSize;   // Maximum number of objects that can be stored in the array
-  int currentSize;  // current size of array at current moment.
+  int currentSize ;  // current size of array at current moment.
+  double loadFactor;    // Load Factor of the HashMap
 
   // Functions which will be called only via other functions present in this class only.
   
@@ -33,7 +36,7 @@ class HashMap
         
         // for all the elements in the branch of this HashNode (if there is any)
         while ( head != NULL) {
-          this->insert( head->key , head->value );
+          this->insert( head->getKey() , head->getValue());
           head = head->next;      
         }
       }
@@ -43,26 +46,20 @@ class HashMap
   }
 
 
-  // Returns current size of the array of objects.
-  int  size()
-  {
-    return this->currentSize;
-  }
-
 
   // The function which calculates and returns the hash for that key-value pair.
   int  calculateHash(KeyType k)
   {
     /*
-     * Returns the hash value of this key-pair which is the sum of all ASCII characters in the key.
+     * Returns the hash value of this key-pair which is the sum of all ASCII characters multiplied by their index in the key mod the maxSize
      */
 
     int hashValue = 0;
     string keyString = (string)k;     // Type cast into string and hope it gets typecasted properly.
     for (unsigned int i = 0 ; i < keyString.length() ; i++)
-      hashValue += keyString[i];
+      hashValue += keyString[i] * i;
 
-    return hashValue;
+    return hashValue%maxSize;
   }
 
 
@@ -71,13 +68,17 @@ class HashMap
 
     HashMap(int size)   // Constructor to create hashmap object for insertion/updation/deletion of key-value pair.
     {
-      cout << "[*] Initial size of HashMap as asked by user is : " << size<<endl;
+      cout << "[*] Initial default size of HashMap is : " << size<<endl;
+      currentSize = 0;
+      loadFactor = 0;
       maxSize = size;
       arrayOfObjects = new HashNode<KeyType , ValueType>*[maxSize];
 
       // Initialise all objects with Null , will be useful in case of re-hashing i.e finding out what all indexes actually contain data and which ones not.
       for (int i = 0 ; i < maxSize ; i++)
+      {
         arrayOfObjects[i] = NULL;
+      }
     }
 
 
@@ -86,29 +87,42 @@ class HashMap
     {
       // Before inserting no need to check for size because after every insertion a check for loadFactor is being done and since we will be inserting one by one thus no need to check size before.
       // Check the loadFactor after inserting if it's greater than 70% then call rehashing function.
-      // For insertion just get the hash value and once you get it iterate over that branch in the List/Array/Chain of arrayOfObjects and wherever you find NULL just place the element there.
-
+      // For insertion just get the hash value and once you get it iterate over that branch in the List/Array/Chain of arrayOfObjects and see if that particular key-value pair doesn't already exists, if yes then simply return from there otherwise add the new 'key-value' pair to the top of that branch
       /*
        * This function simply inserts the 'Key-Value' pair in the Array of Objects.
        */
 
       int hashValue = calculateHash(k);
-      HashNode<KeyType, ValueType> *itr  = arrayOfObjects[hashValue];
 
-      // Reach the end of list where itr->next is NULL.
-      while (itr->next != NULL)
+      HashNode<KeyType, ValueType> *head  = arrayOfObjects[hashValue];
+      HashNode<KeyType, ValueType> *obj = new HashNode<KeyType , ValueType>(k,v);   // On heap call delete while deleting it.
+
+      HashNode<KeyType, ValueType> *itr = head;
+
+      // Iterate to check if it already exists or not.
+      while ( itr != NULL)
       {
+        if ( itr->getKey() == k )
+        {
+          cout << "This key already exists, updating it's value"<<endl;
+          itr->setValue(v);
+          return true;
+        }
         itr = itr->next;
       }
-      HashNode<KeyType, ValueType> *obj = new HashNode<KeyType , ValueType>(k,v);
-      itr->next = obj;
+
+      obj->next = head;     // Add this new object to top of list.
+      head = obj;           // Updating its head
+
+      arrayOfObjects[hashValue] = head;       // Place it back on the array.
 
       currentSize += 1;     // Since a new element is added
 
       // Load Factor check for re-hashing to avoid collisions
-      int loadFactor = 1.0 * (currentSize/ maxSize);
-      if (loadFactor < 0.70)
+      loadFactor = getLoadFactor();
+      if (loadFactor > 0.70)
         rehash();
+      cout << "[*] 'Key-Value' pair added successfully , current loadFactor : "<< loadFactor<<endl;
       return true;
     }
 
@@ -127,14 +141,20 @@ class HashMap
       /*
        * Function to remove the 'Key-Value' pair corresponding to the object pointed out by the key.
        */
+
+      bool deletedElement = false;
       int hashValue = calculateHash(k);
 
       HashNode<KeyType , ValueType> *finalNode = arrayOfObjects[hashValue];
+      if (finalNode == NULL)
+      {
+        cout << "[#] Element doesn't exists thus couldn't delete"<<endl;
+        return deletedElement;
+      }
       HashNode<KeyType , ValueType> *parent = finalNode;
       HashNode<KeyType , ValueType> *itr = finalNode;
 
-      bool deletedElement = false;
-      if (itr->key == k)
+      if (itr->getKey() == k)
       {
         // Delete this node and by delete , directly modify in final list since it was the first element itslef that matched.
         finalNode = itr->next;
@@ -146,7 +166,7 @@ class HashMap
         itr = itr->next; // We know for sure that the first element in the chain isn't the 'Key-Value' pair we are looking for.
         while ( itr != NULL)
         {
-          if (itr->key == k)
+          if (itr->getKey() == k)
           {
             // Delete this node and by delete I mean , parent->next = currObject->next and delete currObject and then break;
             parent->next = itr->next;
@@ -159,22 +179,48 @@ class HashMap
       }
 
       arrayOfObjects[hashValue]  = finalNode ;    // Finally placing back the value on the list.
+
+      if (!deletedElement)
+        cout << "[#] Element doesn't exists thus couldn't delete"<<endl;
+      else
+        cout << "[*] Element deleted successfully"<<endl;
+
       return deletedElement;
     }
 
     // Function to print All objects present in Array.
     void printAllObjects()
     {
+      if (currentSize == 0)
+      {
+        cout << "[*] printAllObjects() : arrayOfObjects is empty"<<endl;
+        return;
+      }
+
       cout << "[*] printAllObjects() : The Objects are as : "<<endl;
+      print("","");
+      print("KEY","VALUE");
+      print("","");
       for (int i = 0 ;i < currentSize ; i ++)
       {
-        HashNode<KeyType , ValueType> *itr = arrayOfObjects[i];
-        while (itr->next != NULL)
+        HashNode<KeyType , ValueType> *head = arrayOfObjects[i];
+        while (head != NULL)
         {
-          cout << itr->key << " --- " << itr->value;
+          print (head->getKey(),head->getValue());
+          head = head->next;
         }
         cout <<endl;
       }
+    }
+
+    int getLoadFactor(){
+      return this->loadFactor;
+    }
+    
+    // Returns current size of the array of objects.
+    int  getSize()
+    {
+      return this->currentSize;
     }
 
   };
