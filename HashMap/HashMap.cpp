@@ -1,6 +1,7 @@
 #include "HashMap.h"
 
-HashMap :: HashMap(int size)
+template <typename KeyType , typename ValueType>
+HashMap<KeyType , ValueType>::HashMap(int size)
 {
   cout << "[*] Initial size of HashMap as asked by user is : " << size<<endl;
   maxSize = size;
@@ -12,7 +13,8 @@ HashMap :: HashMap(int size)
 }
 
 
-void HashMap :: rehash()
+template <typename KeyType , typename ValueType>
+void HashMap <KeyType , ValueType>:: rehash()
 {
    /* 
     * This function is called means loadFactor has exceeded 70%.
@@ -42,7 +44,8 @@ void HashMap :: rehash()
   return;
 }
 
-int  calculateHash(KeyType k)
+template <typename KeyType , typename ValueType>
+int  HashMap<KeyType , ValueType> :: calculateHash(KeyType k)
 {
   /*
    * Returns the hash value of this key-pair which is the sum of all ASCII characters in the key.
@@ -56,12 +59,14 @@ int  calculateHash(KeyType k)
   return hashValue;
 }
 
-int  HashMap :: size()
+template <typename KeyType , typename ValueType>
+int  HashMap <KeyType , ValueType>:: size()
 {
   return this->currentSize;
 }
 
-bool HashMap :: insert(KeyType k , ValueType v)    
+template <typename KeyType , typename ValueType>
+bool HashMap<KeyType , ValueType> :: insert(KeyType k , ValueType v)    
 {
   // Before inserting no need to check for size because after every insertion a check for loadFactor is being done and since we will be inserting one by one thus no need to check size before.
   // Check the loadFactor after inserting if it's greater than 70% then call rehashing function.
@@ -93,7 +98,8 @@ bool HashMap :: insert(KeyType k , ValueType v)
 }
 
 // Everything is done in insert function only, no need to do it seperately.
-bool HashMap :: update(KeyType k , ValueType v) 
+template <typename KeyType , typename ValueType>
+bool HashMap <KeyType , ValueType>:: update(KeyType k , ValueType v) 
 {
   /*
    * Function to update the key-Value pair of an already existing object, if no object with that key found then would create a new object and insert it.
@@ -101,7 +107,8 @@ bool HashMap :: update(KeyType k , ValueType v)
   return this->insert(k,v);
 }
 
-bool HashMap :: remove(KeyType k )                  
+template <typename KeyType , typename ValueType>
+bool HashMap <KeyType , ValueType>:: remove(KeyType k )                  
 {
   /*
    * Function to remove the 'Key-Value' pair corresponding to the object pointed out by the key.
@@ -142,7 +149,8 @@ bool HashMap :: remove(KeyType k )
 }
 
 
-void printAllObjects()
+template <typename KeyType , typename ValueType>
+void HashMap<KeyType , ValueType> :: printAllObjects()
 {
   cout << "[*] printAllObjects() : The Objects are as : "<<endl;
   for (int i = 0 ;i < currentSize ; i ++)

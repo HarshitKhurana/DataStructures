@@ -2,6 +2,7 @@
 
 # pragma once   // Gaurding against re-compilcation.
 
+template <typename KeyType , typename ValueType>
 class HashMap
 {
   HashNode<KeyType , ValueType> **arrayOfObjects;   // the array containing the key-value pair ( Dynamic - On Heap )
@@ -18,7 +19,7 @@ class HashMap
   // Functions which will be called direclty via object of this class.
   public:
 
-    HashMap();   // Constructor to create hashmap object for insertion/updation/deletion of key-value pair.
+    HashMap(int);   // Constructor to create hashmap object for insertion/updation/deletion of key-value pair.
 
     bool insert(KeyType k , ValueType v);       // Returns true if insertion was successful else returns false
     bool update(KeyType k , ValueType v);       // Returns true if update was successful else returns false

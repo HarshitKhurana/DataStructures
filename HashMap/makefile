@@ -2,13 +2,13 @@ CFLAGS=-std=c++11 -Wall
 
 all: hashMapCode
 
-hashMapCode: hashMap.o main.o
-		$(CXX) $(CFLAGS) main.o -o hashMap
+hashMapCode: HashMap.o main.o
+		$(CXX) $(CFLAGS) main.o -o hashMapCode
 
 main.o: main.cpp
 		$(CXX) $(CFLAGS) -c main.cpp
 
-hashMap.o: hashNode.h hashMap.h hashMap.cpp
+hashMap.o: HashNode.h HashMap.h HashMap.cpp
 		$(CXX) $(CFLAGS) -c hashMap.cpp
 
 clean:

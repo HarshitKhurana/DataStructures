@@ -14,7 +14,8 @@ int main( int argc,  char *argv[]){
   cout << "\t5. To Quit" <endl;
   cin>>choice;
 
-  HashMap<string, string> hashMapObject ;
+  int sizeOfHashMap = 5;
+  HashMap<string, string> hashMapObject(sizeOfHashMap) ;
 
   while (true)  {
     switch (choice)
