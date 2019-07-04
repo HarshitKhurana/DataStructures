@@ -1,3 +1,5 @@
+# pragma once     // Gaurd against multi-compilation
+
 #include<iostream>
 #include<climits>
 #include<cmath>
