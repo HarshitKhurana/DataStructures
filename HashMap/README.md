@@ -18,6 +18,10 @@ user@localhost:~/$ make run
 ### Technical Insights
 ##### -> `Class` named `HashNode` is a user-defined data structure that actually holds the key-value pair.
 ##### -> `Class` named `HashMap` is a user-defined data structure that contains the map of the key-value pair i.e this class contains the collection of `objects` of `HashNode Class`.
+##### -> Re-hashing of the entire Map is done if the loadFactor for the hashMap exceeds 70%, loadFactor is directly proportional to the chances of collisions occuring in the Table/HashMap.
+##### -> Worst case `Time Complexity` of this is: `O(n)` , when the hash function returns the same value for all 'n' elements.
+##### -> The `Space Complexity` of this is:`O(n)`, i.e the size of array holding the objects.
+
 ##### -> Files and their contents are as : 
 
 |S.No| FileName                                  | Content                                                                 |
@@ -28,6 +32,5 @@ user@localhost:~/$ make run
 |4.  | main.cpp                                  | Main file which runs the program                                        |
 |5.  | makefile                                  | File responsible for compiling/running etc                              |
 
-##### -> Re-hashing of the entire Map is done if the loadFactor for the hashMap exceeds 70%, loadFactor is directly proportional to the chances of collisions occuring in the Table/HashMap.
 
 
