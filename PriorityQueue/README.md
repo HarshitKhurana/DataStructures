@@ -1,6 +1,6 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h2> Priority Queue <-> Min/Max Heap </h2>
 
-##### -> To simply put a Min/Max Heap is a Data Structure that helps to access the minimum/maximum value in 'n' elements in O(1) time.
+##### -> To simply put a Min/Max Heap is a Data Structure that helps to access the minimum/maximum value of the 'n' elements in O(1) time.
 ##### -> The way it does is by 
 keeping a map of all the key-value pairs and whenever a new pair is added or the `value` corresponding to a particular `key` is asked for it simply looks up in the map and returns.
 ##### -> The code is an implementation of HashMap with *`Seperate Chaining`* which means that incase of a collision (i.e the case when hash values of 2 keys are same), a new branch will be formed at that specific index and all the 'Key-Value' pair that returns the same hash the corresponding object will be pushed in that seperate branch/list.
