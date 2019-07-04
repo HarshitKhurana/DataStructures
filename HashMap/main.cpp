@@ -8,8 +8,9 @@ void help()
   cout << "\t1. Insert a key-value pair" <<endl;
   cout << "\t2. Update a key-value pair" <<endl;
   cout << "\t3. Delete a key-value pair" <<endl;
-  cout << "\t4. Print all key-Value pairs present" <<endl;
-  cout << "\t5. Print current Number of 'Key-value' pairs and Load Factor of HashMap" <<endl;
+  cout << "\t4. Print the key-Value pair for key provided by user" <<endl;
+  cout << "\t5. Print all key-Value pairs present" <<endl;
+  cout << "\t6. Print current Number of 'Key-value' pairs and Load Factor of HashMap" <<endl;
   cout << "\t9. To Quit" <<endl;
   return;
 }
@@ -62,9 +63,14 @@ int main( int argc,  char *argv[]){
         hashMapObject.remove(key) ; 
         break;
       case 4:
-        hashMapObject.printAllObjects();
+        cout << "\t[*] Enter Key to look out for: ";
+        cin>>key;
+        hashMapObject.printThisObject(key);
         break;
       case 5:
+        hashMapObject.printAllObjects();
+        break;
+      case 6:
         cout << "[*] Load Factor of HashMap : "<<hashMapObject.getLoadFactor()<<endl;
         cout << "[*] Currently number of 'Key-Value' pairs stored in HashMap : "<<hashMapObject.getSize()<<endl;
         break;

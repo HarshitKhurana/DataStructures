@@ -35,8 +35,11 @@ class HashMap
     // Returns true if removing successful else returns false
     bool remove(KeyType k);      
 
-    // Function to print All objects present in Array.
+    // Function to print All objects present in the HashMap.
     void printAllObjects();
+
+    // Function that will print the object containing the key value pair pointed by key.
+    void printThisObject(KeyType k);
 
     // Returns current loadFactor.
     int getLoadFactor();

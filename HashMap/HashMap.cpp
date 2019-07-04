@@ -179,7 +179,7 @@
   {
     if (this->getSize() == 0)
     {
-      cout << "[*] printAllObjects() : arrayOfObjects is empty"<<endl;
+      cout << "[*] printAllObjects() : HashMap is empty"<<endl;
       return;
     }
 
@@ -197,6 +197,39 @@
       }
       cout <<endl;
     }
+    return;
+  }
+
+
+  template <typename KeyType , typename ValueType>
+  void  HashMap<KeyType ,ValueType> :: printThisObject(KeyType k){
+    /*
+     * Prints sinegle object containing key value pair pointed by the key
+     */
+    if (this->getSize() == 0)
+    {
+      cerr << "[#] printThisObject() : HashMap is empty"<<endl;
+      return;
+    }
+    for (int i = 0 ;i < currentSize ; i ++)
+    {
+      HashNode<KeyType , ValueType> *head = arrayOfObjects[i];
+      while (head != NULL)
+      {
+        if (head->getKey() == k)
+        {
+          print("","");
+          print("KEY","VALUE");
+          print("","");
+          print (head->getKey(),head->getValue());
+          return;
+        }
+        head = head->next;
+      }
+      cout <<endl;
+    }
+
+    cerr << "[#] printThisObject() : Key Not found in HashMap "<<endl;
     return;
   }
 
