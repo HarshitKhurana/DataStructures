@@ -4,13 +4,21 @@
 ##### -> The children can be pointed via `left`  and `right` nodes.
 ##### -> The way it stores the info is by keeping nodes and leaf and leafs are the nodes with no child.
 
+##### -> To run it do the following steps :
+```
+user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
+user@localhost:~/$ cd DataStructures/Tree/B-Trees
+user@localhost:~/$ make install
+user@localhost:~/$ make run
+
+```
 
 ##### -> The folder structure is as follows : 
 
 |S.No| FileName                                  | Content                                                                 |
 |----| ------------------------------------------|:-----------------------------------------------------------------------:|
 |1.  | BTNode.h                                  | Class to hold a single Node object.                                     |
-|2.  | BTree.cpp                                 | Implementation of B- Trees.                                             |
+|2.  | BTree.cpp                                 | Implementation of B-Trees.                                              |
 |3.  | main.cpp                                  | Main file which runs the program                                        |
 |4.  | makefile                                  | File responsible for compiling/running etc
 

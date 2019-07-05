@@ -3,6 +3,15 @@
 ##### -> A M-Way Tree is a Data Structure that has multiple children
 ##### -> The way it stores the info is by keeping nodes and leaf and leafs are the nodes with no child.
 
+##### -> To run it do the following steps :
+```
+user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
+user@localhost:~/$ cd DataStructures/Tree/M-Way\ Trees
+user@localhost:~/$ make install
+user@localhost:~/$ make run
+
+```
+
 
 ##### -> The folder structure is as follows : 
 
