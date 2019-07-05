@@ -8,8 +8,8 @@
 ```
 user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
 user@localhost:~/$ cd DataStructures/HashMap
-user@localhost:~/$ make install
-user@localhost:~/$ make run
+user@localhost:~/DataStructures/HashMap$ make install
+user@localhost:~/DataStructures/HashMap$ make run
 
 ```
 

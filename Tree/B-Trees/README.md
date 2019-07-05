@@ -8,8 +8,8 @@
 ```
 user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
 user@localhost:~/$ cd DataStructures/Tree/B-Trees
-user@localhost:~/$ make install
-user@localhost:~/$ make run
+user@localhost:~/DataStructures/Tree/B-Trees$ make install
+user@localhost:~/DataStructures/Tree/B-Trees$ make run
 
 ```
 
