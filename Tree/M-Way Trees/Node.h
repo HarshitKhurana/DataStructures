@@ -12,18 +12,11 @@ class Node
 
   public:
 
-  vector<Node<T>> *children;    // vector of child nodes
+  vector<Node<T> *> children;    // vector of child nodes, on stack only, but it holds the Node objects which are constructed on heap (and thus a pointer in their defn.)
 
   Node(T value)
   {
     this->value = value;
-    children = NULL;                // Initiialise with NULL
-  }
-
-  // returns vector object.
-  vector<Node<T>> getChildren()
-  {
-    return this->children;
   }
 
   T getValue()

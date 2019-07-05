@@ -13,18 +13,18 @@ Node<int> * takeInputLevelWise(Node<int> *root , int rootVal)
       pendingNodes.pop();
 
       int children;
-      cout << "[*] Enter the number of children for "<< front->getValue() <<endl;
+      cout << "[*] Enter the number of children for "<< front->getValue() << " : ";
       cin>>children;
 
-      cout <<"Enter children"<<endl;
       for (int i = 0 ; i < children  ;i++)
       {
+        cout << "\t[*] Enter child "<<i<<" of " <<front->getValue() <<" : ";
         int temp;
         cin>>temp;
         Node<int> *thisChild = new Node<int>(temp);
-        root->children->push_back(thisChild);
+        front->children.push_back(thisChild);
         pendingNodes.push(thisChild);
-        cout <<"[*] Node with value "<<temp<<" created\n";
+        cout <<"\t\t[*] A child Node with value "<<temp<<" created\n";
       }
     }
     return root;
@@ -39,17 +39,22 @@ void printTreeLevelWise(Node<int> *root)
   queue<Node<int> *> NodesQ;    // Pointer to Node will be stored.
 
   NodesQ.push(root);
+  cout << endl<<"\tParent -> Children"<<endl<<endl;
   while (! NodesQ.empty())
   {
     Node<int> *front = NodesQ.front();
     NodesQ.pop();
 
-    cout << "\t[*] "<<front->getValue();
-    for ( unsigned int i = 0 ; i < front->children->size(); i ++)
+    cout << "\t[*] "<<front->getValue()<<" ->";
+    unsigned int x =  front->children.size();
+    for ( unsigned int i = 0 ; i < x; i ++)
     {
-      cout << " : "<<front->children->at(i).getValue();
-      NodesQ.push(front->children->at(i));
+      cout << " " <<front->children.at(i)->getValue();
+      NodesQ.push(front->children.at(i));
+      if ( (i+1) != x)
+        cout << ",";
     }
+    cout<<endl;
 
   }
   return;
@@ -58,7 +63,7 @@ void printTreeLevelWise(Node<int> *root)
 int main()
 {
     int rootVal;
-    cout << "[*] Enter the root of Tree";
+    cout << "[*] Enter the root of Tree : ";
     cin>>rootVal;
 
     Node<int> *root = new Node<int>(rootVal);

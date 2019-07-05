@@ -11,6 +11,7 @@
 |1.  | Node.h                                    | Class to hold a single Node object.                                     |
 |2.  | MWayTree.h                                | M-Way Tree class.                                                       |
 |3.  | MWayTree.cpp                              | Implementation of M-Way Trees Class.                                    |
+|3.  | main.cpp                                  | Main file to trigger the program                                        |
 
 
 
