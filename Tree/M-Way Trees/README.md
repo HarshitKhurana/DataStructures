@@ -9,9 +9,7 @@
 |S.No| FileName                                  | Content                                                                 |
 |----| ------------------------------------------|:-----------------------------------------------------------------------:|
 |1.  | Node.h                                    | Class to hold a single Node object.                                     |
-|2.  | MWayTree.h                                | M-Way Tree class.                                                       |
-|3.  | MWayTree.cpp                              | Implementation of M-Way Trees Class.                                    |
-|3.  | main.cpp                                  | Main file to trigger the program                                        |
-
-
+|2.  | MWayTree.cpp                              | Implementation of M-Way Trees.                                          |
+|3.  | main.cpp                                  | Main file which runs the program                                        |
+|4.  | makefile                                  | File responsible for compiling/running etc
 
