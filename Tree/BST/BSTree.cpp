@@ -1,49 +1,100 @@
-#pragma once
 
-#include "BSTree.h" 
+#include "BTNode.h" 
 
-// 1 object of this class represent 1 entire BST.
 
-  // Constructor to create an object of this class with root value of `value`.
-  template <typename T>
-  BSTree<T> :: BSTree (T value)
+  // comparer function to evaluate which one is larger from x and y, return true if x is greater else returns false.
+  bool comparer (int x,int y)
   {
-    this->value = value;
-    this->root = new BTNode<T>(value);
+    return x>y ? true:false;
   }
 
-  // Function to insert a value in BST
-  template <typename T>
-  void BSTree<T> :: insert (BTNode<T> *root , T insValue)
+  // Function to insert a value in BSint
+  BTNode<int> *insert (BTNode<int> *root , int insValue)
   {
     // if current node is null the directly insert here.
-    if (this->root == nullptr)
+    if (root == NULL)
     {
-      BTNode<T> *thisObj = new BTNode<T>(insValue);
-      this->root = thisObj;
+      BTNode<int> *thisObj = new BTNode<int>(insValue);
+      root = thisObj;
     }
     else
     {
       // comparer function returns true if first arg is greater than second arg.
-      if (comparer(root->getValue(), insValue) )
-        insert(root->left , insValue);      // Insert in left subtree
+      if ( comparer(root->getValue(), insValue) )
+        root->left  = insert(root->left , insValue);      // Insert in left subtree
       else
-        insert(root->right , insValue);      // Insert in rightsubtree
+        root->right = insert(root->right , insValue);      // Insert in rightsubtree
     }
+    return root;
   }
 
-  // Function to remove a value from BST
-  template <typename T>
-  void BSTree<T> :: remove (BTNode<T> *root , T delValue)
+  // Function to remove a value from BSint and return root of remaining tree.
+  BTNode<int> * remove (BTNode<int> *root , int delValue)
   {
-    // Use little head here , if the delValue is a root then you would need to re-arrange it's children
+    if (root == NULL)
+      root = NULL;
+
+    else if (root->getValue() == delValue)
+    {
+      // if only 1 child make it point to current node
+      if ( root->left == NULL)
+        root =  root->right;
+      else if ( root->right == NULL)
+        root =  root->left;
+
+      // Use little head here , if the delValue is a root then you would need to re-arrange it's children
+      // Simple store all the elements of that tree in a vector remove the node and then call insert function back on all nodes present in the vector. -> Worst case O(n).
+      // Use a queue to iterate over BST in BFS manner.
+      else if ( (root->left != NULL) && (root->right != NULL) )
+      {
+        vector<BTNode<int> *> v;    // To Store all nodes
+        queue <BTNode<int> *> q;     // To iterate over entire tree
+        q.push(root);
+        //v.push_back(root);      // We don't want the root of this array to also be a part of our new tree because we want to remove it , right ? YES.
+        while (!q.empty())
+        {
+          BTNode<int> *front = q.front();
+          q.pop();
+          if ( front->left != NULL)
+          {
+            q.push(front->left);
+            v.push_back(front->left);
+          }
+          if ( front->right != NULL)
+          {
+            q.push(front->right);
+            v.push_back(front->right);
+          }
+        }
+        // Now the vector has all the elements of that Tree/Sub-Tree.
+        
+        // Here simply create a new tree with all the elements and return the root of it, at root keep the element.
+        BTNode<int> *newRoot = new BTNode<int> (v.at(0)->getValue()); // first element of array.
+        delete v.at(0);
+        for (unsigned int i = 1; i < v.size() ; i ++)
+        {
+          newRoot = insert(newRoot , v.at(i)->getValue());
+          // since all the objects are on heap , make sure to delete them
+          delete v.at(i);
+        }
+        root = newRoot;   // return the root of newly formed array.
+      }
+    }
+    else
+    {
+      // comparer function returns true if first arg is greater than second arg.
+      if (comparer(root->getValue() ,delValue))
+        root = remove(root->left , delValue);
+      else
+        root = remove(root->right , delValue);
+    }
+    return root;
   }
 
-  // Function to search a value in BST, return true if found else false.
-  template <typename T>
-  bool BSTree<T> :: search (BTNode<T> *root , T searchValue)
+  // Function to search a value in BSint, return true if found else false.
+  bool  search (BTNode<int> *root , int searchValue)
   {
-    if (root == nullptr)
+    if (root == NULL)
       return false;
 
     else if (root->getValue() == searchValue)
@@ -51,21 +102,19 @@
     else
     {
       if (comparer(root->getValue(), searchValue) )
-        search(root->left , searchValue);      // Insert in left subtree
+        return search(root->left , searchValue);      // Insert in left subtree
       else
-        search(root->right , searchValue);      // Insert in rightsubtree
+        return search(root->right , searchValue);      // Insert in rightsubtree
     }
-
   }
 
-  // Function to print The BST , the value of type decides PreOrder , InOrder , Post-Order traversal resp.
-  template <typename T>
-  void BSTree<T> :: print (BTNode<T> *root , int type)
+  // Function to print inthe BSint , the value of type decides PreOrder , InOrder , Post-Order traversal resp.
+  void  print (BTNode<int> *root , int type)
   {
     // type = 0 -> Pre-Order
     // type = 1 -> In-Order
     // type = 2 -> Post-Order
-    if (root == nullptr)
+    if (root == NULL)
       return;
 
     if (type == 0)
@@ -91,11 +140,5 @@
 
   }
 
-  // comparer function to evaluate which one is larger from x and y, return true if x is greater else returns false.
-  template <typename T>
-  bool BSTree<T> :: comparer (T x,T y)
-  {
-    return x>y ? true:false;
-  }
 
 

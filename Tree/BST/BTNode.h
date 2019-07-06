@@ -1,4 +1,5 @@
 #pragma once
+
 #include<iostream>
 #include<bits/stdc++.h>
 
@@ -15,9 +16,9 @@ class BTNode
 
   BTNode(T value)
   {
-    this->left  = nullptr;
+    this->left  = NULL;
     this->value = value;
-    this->right = nullptr;
+    this->right = NULL;
   }
 
   T getValue()
