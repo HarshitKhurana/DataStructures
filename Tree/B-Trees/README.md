@@ -3,6 +3,7 @@
 ##### -> A B-Tree is a special kind of M-Way Tree where any node can have a maximum of only 2 children.
 ##### -> The children can be pointed via `left`  and `right` nodes.
 ##### -> The way it stores the info is by keeping nodes and leaf and leafs are the nodes with no child.
+##### -> Time complexity of searching in a Binary Tree is an O(n) operation.
 
 ##### -> To run it do the following steps :
 ```
