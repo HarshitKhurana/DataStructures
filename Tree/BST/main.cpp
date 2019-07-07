@@ -48,7 +48,7 @@ int main( int argc,  char *argv[]){
         case 3:
           cout <<"[*] Enter Element to delete : ";
           cin>>element;
-          remove(root,element);
+          root = remove(root,element);
           cout <<"[*] Element deleted successfully"<<endl;
           break;
         case 4:
