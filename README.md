@@ -7,9 +7,9 @@
 ```
 user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
 user@localhost:~/$ cd DataStructures
-# Here you can go to diretory of yoour choice and run the following commands in order to run the code.
-user@localhost:~/$ make install
-user@localhost:~/$ make run
+# Here you can go to directory of your choice and run the following commands in order to run the code.
+user@localhost:~/DataStructures$ make install
+user@localhost:~/DataStructures$ make run
 
 ```
 
