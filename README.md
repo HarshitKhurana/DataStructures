@@ -13,3 +13,6 @@ user@localhost:~/$ make run
 
 ```
 
+###### -> Data Structures are always selected based on the use-case i.e if you want top-most element only and not an entire sorted list it would be better to use a Heap (which returns top-most element in O(1)) rather than keeping a sorted list or BST which would take O(nlogN) for this operation.
+
+
