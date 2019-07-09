@@ -2,6 +2,8 @@ CFLAGS=-std=c++11 -Wall -O2
 
 all: BSTree
 
+install: BSTree
+
 BSTree: main.o BSTree.o
 		$(CXX) $(CFLAGS) main.o -o BSTree
 
