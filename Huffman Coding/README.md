@@ -1,12 +1,15 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h2> Huffman Coding</h2>
 
 ##### -> Huffman Coding is an efficient means to produce variable length codes , used in text compression.
+##### -> Data Structures used in the implementation will be Priority Queue, Binary Tree and Hashmap.
+##### -> 
+##### -> 
 ##### -> To run it do the following steps :
 ```
 user@localhost:~/$ git clone https://github.com/HarshitKhurana/DataStructures.git
-user@localhost:~/$ cd DataStructures/HashMap
-user@localhost:~/DataStructures/HashMap$ make install
-user@localhost:~/DataStructures/HashMap$ make run
+user@localhost:~/$ cd DataStructures/Huffman\ Coding
+user@localhost:~/DataStructures/Huffman Coding$ make install
+user@localhost:~/DataStructures/Huffman Coding$ make run
 
 ```
 
