@@ -17,12 +17,12 @@ class BTNode
 
   BTNode(int value)
   {
-    this->left  = nullptr;
     this->value = value;
+    this->left  = nullptr;
     this->right = nullptr;
   }
 
-  T getValue()
+  int getValue()
   {
     return this->value;
   }

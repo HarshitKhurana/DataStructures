@@ -22,13 +22,14 @@ void clearScreen()
 int main( int argc,  char *argv[]){
 
 
-  HuffMan hf;
+  Huffman hf;
 
   clearScreen();      // to clear screen
   cout << "\t\t\t\t\t\t HuffMan Coding\n"<<endl;
 
   string key; 
-  int value; 
+  int value , choice; 
+
   while (true)  {
   help();
   cout << "\n[*] Enter choice: ";

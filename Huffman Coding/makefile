@@ -1,23 +1,23 @@
 CFLAGS=-std=c++11 -Wall -O2
 
-all: huffMan
+all: Huffman
 
-install: huffMan
+install: Huffman
 
-huffMan: HashMap.o main.o
-		$(CXX) $(CFLAGS) main.o -o huffMan
+Huffman: Huffman.o main.o
+		$(CXX) $(CFLAGS) main.o -o Huffman
 
-main.o: main.cpp Huffman.cpp
-		$(CXX) $(CFLAGS) -c main.cpp Huffman.cpp
+main.o: main.cpp Huffman.o
+		$(CXX) $(CFLAGS) -c main.cpp 
 
-huffMan.o: Huffman.h BTNode.h Comparison.h Huffman.cpp 
-		$(CXX) $(CFLAGS) -c huffMan.cpp
+Huffman.o: Huffman.h BTNode.h Comparison.h Huffman.cpp 
+		$(CXX) $(CFLAGS) -c Huffman.cpp -o Huffman.o
 
 clean:
-	rm -f *.o huffMan
+	rm -f *.o Huffman
 
 rm:
-	rm -f *.o huffMan
+	rm -f *.o Huffman
 
 run:
-		./huffMan
+		./Huffman
