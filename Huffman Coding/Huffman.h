@@ -25,4 +25,6 @@ class Huffman
 
     void printCodes();        // Print the forward lookup table along with it's code as per Huffman Coding.
 
+    void reset();   // Delete all hashmaps priority Queues and all BT Nodes.
+
 };
