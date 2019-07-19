@@ -28,4 +28,6 @@ class Huffman
 
     void reset();   // Delete all hashmaps priority Queues and all BT Nodes.
 
+    void printTree( BTNode *root);   // print The Huffman tree
+
 };

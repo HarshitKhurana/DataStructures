@@ -46,19 +46,23 @@
     // Initially we will always recieve a non-NULL pointer, so no need to check initially
     
     // for all left children append "0" to the code and for all right children append "1" to the code.
-    
+    //print3 ("-> " , rootNode->getValue() , codesMap->at( to_string(rootNode->getValue())));
     if (rootNode->left != nullptr)
     {
-      print ("left" , rootNode->getValue());
-      (*codesMap)[ std::to_string(rootNode->left->getValue())] = (string)(codesMap->at( to_string(rootNode->getValue())) + "0");
+      (*codesMap)[ std::to_string(rootNode->left->getValue())] = codesMap->at( to_string(rootNode->getValue())) + "0";
       getCodes( codesMap, rootNode->left);
     }
     if (rootNode->right != nullptr)
     {
-      print ("right" , rootNode->getValue());
-      (*codesMap)[std::to_string(rootNode->right->getValue())] = (string)(codesMap->at( to_string(rootNode->getValue())) + "1");
+      (*codesMap)[std::to_string(rootNode->right->getValue())] = codesMap->at( to_string(rootNode->getValue())) + "1";
       getCodes( codesMap, rootNode->left);
     }
+    return;
+  }
+
+  // Inorder : Left Root Right , call with largest element of tree which contains all the children.
+  void Huffman::printTree( BTNode *root)
+  {
     return;
   }
 
@@ -70,7 +74,9 @@
     // repeat this process untill there is only 1 node left.
     // This way the tree is formed starting from that one node.
 
-    cout <<"\tHuffMan tree is as : (parent : left : right) " <<endl;
+    BTNode *newNode ;
+      print3("Inside" , "makeHuffman","Tree");
+      print3( "parent" , "left" , "right");
     while ( pq->size() != 1)
     {
       BTNode *firstElem = pq->top();
@@ -80,11 +86,16 @@
 
       int newNodeValue = firstElem->getValue() + secondElem->getValue();
       // Cannot directly use insert function here as it will also insert in the hashmap , which is not required.
-      BTNode *newNode = new BTNode(newNodeValue);
+      newNode = new BTNode(newNodeValue);
       newNode->left = firstElem;  // Smaller of 2
-      newNode->left = secondElem; // Bigger of 2
+      newNode->right = secondElem; // Bigger of 2
       pq->push(newNode);
+      print3(newNode->getValue() , newNode->left->getValue() , newNode->right->getValue());
     }
+    cout <<"Calling printTree with node with value : " << newNode->getValue()<<endl;
+    print3("parent" , "left" , "right");
+
+    printTree(pq->top());
     // finally the priority Queue now only consists of 1 element which is the root of the Binary Tree.
     return;
   }
@@ -114,7 +125,7 @@
     cout <<"[*] The Codes for the strings are as follows : "<<endl;
     for ( unordered_map<string, string> ::iterator itr = codesMap->begin(); itr != codesMap->end() ; itr++)
     {
-      print3 ("temp\t" , itr->first , itr->second);
+      print3 ("-> Node \t" , itr->first , itr->second);
       // If this node exists in the reverse lookup table print it , else it is 'newNode' which was created for the purpose of completeing the Huffman Tree, delete it from codesMap
       if (reverseLookup->count( std::stoi(itr->first)) ) 
         // print (string , it's frequency , it's HuffmanCode)
@@ -132,13 +143,14 @@
   {
     while ( !pq->empty())
     {
-      BTNode *temp = pq->top();
-      delete temp;
+      auto top = pq->top();
+      delete top;
       pq->pop();
     }
-    delete pq;
-    delete forwardLookup;
-    delete reverseLookup;
+    // Dont delete these as these are reqd.
+//    delete pq;
+//    delete forwardLookup;
+//    delete reverseLookup;
     return;
   }
 
